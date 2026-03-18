@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}All Matches{% endblock %}
+
+{% block content %}
+<div class="container">
+    <section class="mt-3">
+        <h1 class="page-title">All Matches</h1>
+        <p class="page-subtitle">Upcoming, live, and recent cricket matches</p>
+    </section>
+
+    <section class="mt-3">
+        <div class="tabs">
+            <div class="tab active" data-tab="upcoming" onclick="switchTab('upcoming')">Upcoming</div>
+            <div class="tab" data-tab="live" onclick="switchTab('live')">Live</div>
+            <div class="tab" data-tab="recent" onclick="switchTab('recent')">Recent</div>
+            <div class="tab" data-tab="ipl" onclick="switchTab('ipl')">IPL</div>
+        </div>
+    </section>
+
+    <section class="mt-3 mb-4">
+        <div id="matchesContainer">
+            <div class="loading-placeholder">
+                <p>Loading matches...</p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-title {
+    font-size: clamp(32px, 6vw, 48px);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-yellow));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.page-subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-top: 8px;
+}
+
+#matchesContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+@media (min-width: 768px) {
+    #matchesContainer {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let currentTab = 'upcoming';
+
+function switchTab(tab) {
+    currentTab = tab;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+    loadMatches();
+}
+
+async function loadMatches() {
+    const container = document.getElementById('matchesContainer');
+    container.innerHTML = '<div class="loading-placeholder"><p>Loading matches...</p></div>';
+    
+    try {
+        // Sample matches data - replace with actual API call
+        const matches = generateSampleMatches(currentTab);
+        
+        container.innerHTML = '';
+        matches.forEach(match => {
+            container.innerHTML += createMatchCard(match);
+        });
+    } catch (error) {
+        console.error('Error loading matches:', error);
+        container.innerHTML = '<div class="loading-placeholder"><p>Error loading matches</p></div>';
+    }
+}
+
+function generateSampleMatches(tab) {
+    // Sample data - replace with actual API
+    const matches = [
+        {
+            id: 1,
+            type: 'T20I',
+            team1: { name: 'India', short: 'IND', score: '185/6', overs: '20.0' },
+            team2: { name: 'Australia', short: 'AUS', score: '178/8', overs: '20.0' },
+            status: tab === 'upcoming' ? 'Tomorrow, 7:00 PM' : (tab === 'live' ? 'India won by 7 runs' : 'India won by 7 runs'),
+            venue: 'Wankhede Stadium, Mumbai',
+            statusType: tab
+        },
+        {
+            id: 2,
+            type: 'ODI',
+            team1: { name: 'England', short: 'ENG', score: '276/4', overs: '50.0' },
+            team2: { name: 'Pakistan', short: 'PAK', score: '245', overs: '47.3' },
+            status: tab === 'upcoming' ? 'Today, 3:30 PM' : 'England won by 31 runs',
+            venue: 'Lord\'s, London',
+            statusType: tab
+        },
+        {
+            id: 3,
+            type: 'Test',
+            team1: { name: 'New Zealand', short: 'NZ', score: '342 & 187/3', overs: '45.0' },
+            team2: { name: 'South Africa', short: 'SA', score: '298', overs: '89.2' },
+            status: tab === 'upcoming' ? 'Friday, 10:00 AM' : 'Day 3, NZ lead by 231 runs',
+            venue: 'Basin Reserve, Wellington',
+            statusType: tab
+        }
+    ];
+    
+    return matches;
+}
+
+function createMatchCard(match) {
+    const statusClass = match.statusType === 'live' ? 'live' : (match.statusType === 'upcoming' ? 'upcoming' : 'completed');
+    
+    return `
+        <a href="/scorecard/${match.id}" class="match-card" style="text-decoration: none;">
+            <div class="match-header">
+                <div class="match-type">${match.type}</div>
+                <div class="match-status ${statusClass}">${match.statusType.toUpperCase()}</div>
+            </div>
+            <div class="match-body">
+                <div class="teams">
+                    <div class="team">
+                        <div class="team-info">
+                            <div class="team-flag">${match.team1.short}</div>
+                            <div>
+                                <div class="team-name">${match.team1.name}</div>
+                            </div>
+                        </div>
+                        ${match.statusType !== 'upcoming' ? `
+                            <div>
+                                <div class="team-score">${match.team1.score}</div>
+                                <div class="team-overs">(${match.team1.overs} ov)</div>
+                            </div>
+                        ` : ''}
+                    </div>
+                    <div class="team">
+                        <div class="team-info">
+                            <div class="team-flag">${match.team2.short}</div>
+                            <div>
+                                <div class="team-name">${match.team2.name}</div>
+                            </div>
+                        </div>
+                        ${match.statusType !== 'upcoming' ? `
+                            <div>
+                                <div class="team-score">${match.team2.score}</div>
+                                <div class="team-overs">(${match.team2.overs} ov)</div>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+                <div class="mt-2 text-center text-muted" style="font-size: 13px;">${match.status}</div>
+                <div class="text-center text-muted" style="font-size: 12px; margin-top: 4px;">${match.venue}</div>
+            </div>
+        </a>
+    `;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadMatches();
+});
+</script>
+{% endblock %}

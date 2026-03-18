@@ -1,0 +1,377 @@
+{% extends "base.html" %}
+
+{% block title %}Credits{% endblock %}
+
+{% block content %}
+<div class="container">
+    <section class="mt-3">
+        <h1 class="page-title">Credits</h1>
+        <p class="page-subtitle">The people who made this possible</p>
+    </section>
+
+    <!-- Idea Contributors -->
+    <section class="mt-4">
+        <div class="section-header">
+            <h2 class="section-title">Original Idea</h2>
+        </div>
+        
+        <div class="credits-grid">
+            <div class="credit-card">
+                <div class="credit-photo-container">
+                    <div class="credit-photo" id="contributor1Photo">
+                        <img src="{{ url_for('static', filename='images/img2.jpeg') }}" alt="Contributor 1" onerror="this.src='{{ url_for('static', filename='images/contributor1.svg') }}'">
+                    </div>
+                </div>
+                <div class="credit-info">
+                    <h3 class="credit-name">SAI SANJAN P</h3>
+                    <p class="credit-role">Idea Originator</p>
+                    <p class="credit-description">
+                        The visionary behind this cricket stats platform. Their passion for cricket analytics 
+                        and desire for real-time statistics inspired the creation of this comprehensive system.
+                    </p>
+                </div>
+            </div>
+
+            <div class="credit-card">
+                <div class="credit-photo-container">
+                    <div class="credit-photo" id="contributor2Photo">
+                        <img src="{{ url_for('static', filename='images/img1.jpeg') }}" alt="Contributor 2" onerror="this.src='{{ url_for('static', filename='images/contributor2.svg') }}'">
+                    </div>
+                </div>
+                <div class="credit-info">
+                    <h3 class="credit-name">LALITH ADITYA</h3>
+                    <p class="credit-role">Idea Originator</p>
+                    <p class="credit-description">
+                        Co-visionary who brought unique insights into cricket data visualization and 
+                        player comparison features. Their expertise shaped the core functionality.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Development Team -->
+    <section class="mt-4">
+        <div class="section-header">
+            <h2 class="section-title">Development Team</h2>
+        </div>
+        
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-avatar">AK</div>
+                <div class="team-info">
+                    <h3 class="team-name">Abinaav</h3>
+                    <p class="team-role">Lead Developer</p>
+                    <p class="team-description">Full-stack development, API integration, mobile-first design</p>
+                </div>
+            </div>
+
+            <div class="team-card">
+                <div class="team-avatar">AR</div>
+                <div class="team-info">
+                    <h3 class="team-name">Arvindhan</h3>
+                    <p class="team-role">Collaborator</p>
+                    <p class="team-description">GaiaSentinel ecosystem co-creator</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Stack -->
+    <section class="mt-4">
+        <div class="section-header">
+            <h2 class="section-title">Built With</h2>
+        </div>
+        
+        <div class="tech-grid">
+            <div class="tech-card">
+                <div class="tech-icon">🐍</div>
+                <div class="tech-name">Flask</div>
+                <div class="tech-desc">Backend Framework</div>
+            </div>
+            
+            <div class="tech-card">
+                <div class="tech-icon">🎨</div>
+                <div class="tech-name">Custom CSS</div>
+                <div class="tech-desc">Mobile-First Design</div>
+            </div>
+            
+            <div class="tech-card">
+                <div class="tech-icon">📊</div>
+                <div class="tech-name">Cricket API</div>
+                <div class="tech-desc">Live Data Integration</div>
+            </div>
+            
+            <div class="tech-card">
+                <div class="tech-icon">🚀</div>
+                <div class="tech-name">GaiaSentinel</div>
+                <div class="tech-desc">Infrastructure</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Acknowledgements -->
+    <section class="mt-4 mb-4">
+        <div class="acknowledgements-card">
+            <h3 class="ack-title">Special Thanks</h3>
+            <p class="ack-text">
+                To all cricket fans who inspire us to build better tools for the game we love. 
+                This platform is dedicated to making cricket statistics accessible, beautiful, and insightful.
+            </p>
+            <div class="ack-footer">
+                <p class="ack-site">Part of the <span class="accent">GaiaSentinel</span> ecosystem</p>
+                <p class="ack-domain">cricket.gaiasentinel.online</p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-title {
+    font-size: clamp(32px, 6vw, 48px);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-yellow));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.page-subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-top: 8px;
+}
+
+.credits-grid {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+    .credits-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.credit-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
+    padding: 24px;
+    transition: all var(--transition-base);
+}
+
+.credit-card:hover {
+    border-color: var(--accent-blue);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow);
+}
+
+.credit-photo-container {
+    margin-bottom: 20px;
+}
+
+.credit-photo {
+    width: 100%;
+    height: 280px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--bg-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.credit-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-placeholder {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    text-align: center;
+    padding: 40px;
+}
+
+.credit-name {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.credit-role {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.credit-description {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.team-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.team-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    gap: 16px;
+    align-items: start;
+    transition: all var(--transition-base);
+}
+
+.team-card:hover {
+    border-color: var(--border-bright);
+    transform: translateX(4px);
+}
+
+.team-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-yellow));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--bg-primary);
+}
+
+.team-info {
+    flex: 1;
+}
+
+.team-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.team-role {
+    font-size: 13px;
+    color: var(--accent-blue);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.team-description {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+@media (min-width: 768px) {
+    .tech-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.tech-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    transition: all var(--transition-base);
+}
+
+.tech-card:hover {
+    border-color: var(--accent-blue);
+    transform: scale(1.05);
+}
+
+.tech-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+}
+
+.tech-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.tech-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.acknowledgements-card {
+    background: linear-gradient(135deg, var(--bg-card), var(--bg-tertiary));
+    border: 1px solid var(--border-bright);
+    border-radius: 20px;
+    padding: 32px;
+    text-align: center;
+}
+
+.ack-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+}
+
+.ack-text {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 24px;
+}
+
+.ack-footer {
+    padding-top: 24px;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.ack-site {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.ack-site .accent {
+    color: var(--accent-blue);
+    font-weight: 700;
+}
+
+.ack-domain {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--accent-yellow);
+    font-weight: 600;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,385 @@
+{% extends "base.html" %}
+
+{% block title %}Match Scorecard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <section class="mt-3">
+        <div class="scorecard-header">
+            <a href="{{ url_for('matches') }}" class="back-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Back
+            </a>
+            <div class="match-type-badge">T20I</div>
+        </div>
+    </section>
+
+    <section class="mt-3">
+        <div class="score-summary">
+            <div class="team-score-large">
+                <div class="team-header">
+                    <div class="team-flag-large">IND</div>
+                    <div>
+                        <h2 class="team-name-large">India</h2>
+                        <p class="team-info-text">Batting • 1st Innings</p>
+                    </div>
+                </div>
+                <div class="score-display">
+                    <span class="score-large">185/6</span>
+                    <span class="overs-large">(20.0 ov)</span>
+                </div>
+            </div>
+
+            <div class="vs-divider-scorecard">VS</div>
+
+            <div class="team-score-large">
+                <div class="team-header">
+                    <div class="team-flag-large">AUS</div>
+                    <div>
+                        <h2 class="team-name-large">Australia</h2>
+                        <p class="team-info-text">Bowling • 1st Innings</p>
+                    </div>
+                </div>
+                <div class="score-display">
+                    <span class="score-large">178/8</span>
+                    <span class="overs-large">(20.0 ov)</span>
+                </div>
+            </div>
+
+            <div class="match-result">
+                🏆 India won by 7 runs
+            </div>
+        </div>
+    </section>
+
+    <section class="mt-3">
+        <div class="tabs">
+            <div class="tab active" data-tab="scorecard">Scorecard</div>
+            <div class="tab" data-tab="commentary">Commentary</div>
+            <div class="tab" data-tab="stats">Stats</div>
+        </div>
+    </section>
+
+    <!-- Scorecard Tab -->
+    <section class="mt-3 mb-4" id="scorecardTab">
+        <div class="innings-section">
+            <h3 class="innings-title">India Innings</h3>
+            
+            <div class="batsman-table">
+                <div class="table-header">
+                    <div class="col-player">Batsman</div>
+                    <div class="col-stat">R</div>
+                    <div class="col-stat">B</div>
+                    <div class="col-stat">4s</div>
+                    <div class="col-stat">6s</div>
+                    <div class="col-stat">SR</div>
+                </div>
+                
+                <div class="table-row">
+                    <div class="col-player">
+                        <div class="player-name-cell">Rohit Sharma</div>
+                        <div class="dismissal-text">c Warner b Starc</div>
+                    </div>
+                    <div class="col-stat">48</div>
+                    <div class="col-stat">28</div>
+                    <div class="col-stat">6</div>
+                    <div class="col-stat">2</div>
+                    <div class="col-stat">171.4</div>
+                </div>
+                
+                <div class="table-row">
+                    <div class="col-player">
+                        <div class="player-name-cell">Virat Kohli</div>
+                        <div class="dismissal-text">not out</div>
+                    </div>
+                    <div class="col-stat">82*</div>
+                    <div class="col-stat">53</div>
+                    <div class="col-stat">8</div>
+                    <div class="col-stat">4</div>
+                    <div class="col-stat">154.7</div>
+                </div>
+            </div>
+
+            <div class="extras-section">
+                <span class="extras-label">Extras:</span>
+                <span class="extras-value">12 (b 2, lb 4, w 5, nb 1)</span>
+            </div>
+
+            <div class="total-section">
+                <span class="total-label">Total:</span>
+                <span class="total-value">185/6 (20.0 overs, RR: 9.25)</span>
+            </div>
+        </div>
+
+        <div class="innings-section mt-3">
+            <h3 class="innings-title">Australia Bowling</h3>
+            
+            <div class="bowler-table">
+                <div class="table-header">
+                    <div class="col-player">Bowler</div>
+                    <div class="col-stat">O</div>
+                    <div class="col-stat">M</div>
+                    <div class="col-stat">R</div>
+                    <div class="col-stat">W</div>
+                    <div class="col-stat">ER</div>
+                </div>
+                
+                <div class="table-row">
+                    <div class="col-player">
+                        <div class="player-name-cell">Mitchell Starc</div>
+                    </div>
+                    <div class="col-stat">4</div>
+                    <div class="col-stat">0</div>
+                    <div class="col-stat">38</div>
+                    <div class="col-stat">2</div>
+                    <div class="col-stat">9.5</div>
+                </div>
+                
+                <div class="table-row">
+                    <div class="col-player">
+                        <div class="player-name-cell">Pat Cummins</div>
+                    </div>
+                    <div class="col-stat">4</div>
+                    <div class="col-stat">0</div>
+                    <div class="col-stat">35</div>
+                    <div class="col-stat">1</div>
+                    <div class="col-stat">8.75</div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.scorecard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all var(--transition-fast);
+}
+
+.back-btn:hover {
+    border-color: var(--accent-blue);
+}
+
+.match-type-badge {
+    padding: 8px 16px;
+    background: var(--accent-blue);
+    color: var(--bg-primary);
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.score-summary {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
+    padding: 24px;
+}
+
+.team-score-large {
+    margin-bottom: 24px;
+}
+
+.team-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.team-flag-large {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent-blue);
+}
+
+.team-name-large {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.team-info-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 4px 0 0 0;
+}
+
+.score-display {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.score-large {
+    font-family: var(--font-mono);
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--accent-yellow);
+}
+
+.overs-large {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    color: var(--text-secondary);
+}
+
+.vs-divider-scorecard {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--text-tertiary);
+    margin: 20px 0;
+}
+
+.match-result {
+    text-align: center;
+    padding: 16px;
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid var(--success);
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--success);
+    margin-top: 24px;
+}
+
+.innings-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.innings-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--accent-blue);
+    margin-bottom: 20px;
+}
+
+.batsman-table,
+.bowler-table {
+    width: 100%;
+}
+
+.table-header {
+    display: grid;
+    grid-template-columns: 2fr repeat(5, 1fr);
+    gap: 8px;
+    padding: 12px 8px;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.table-row {
+    display: grid;
+    grid-template-columns: 2fr repeat(5, 1fr);
+    gap: 8px;
+    padding: 12px 8px;
+    border-bottom: 1px solid var(--border-subtle);
+    font-family: var(--font-mono);
+}
+
+.table-row:last-child {
+    border-bottom: none;
+}
+
+.col-player {
+    text-align: left;
+}
+
+.col-stat {
+    text-align: center;
+    color: var(--text-primary);
+}
+
+.player-name-cell {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-family: var(--font-primary);
+}
+
+.dismissal-text {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-top: 2px;
+    font-family: var(--font-primary);
+}
+
+.extras-section,
+.total-section {
+    padding: 12px 8px;
+    font-size: 14px;
+}
+
+.extras-label,
+.total-label {
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.extras-value,
+.total-value {
+    margin-left: 8px;
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+}
+
+.total-section {
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+@media (max-width: 767px) {
+    .table-header,
+    .table-row {
+        grid-template-columns: 1.5fr repeat(5, 0.8fr);
+        font-size: 11px;
+    }
+    
+    .score-large {
+        font-size: 36px;
+    }
+    
+    .overs-large {
+        font-size: 14px;
+    }
+}
+</style>
+{% endblock %}

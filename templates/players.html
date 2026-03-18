@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}Players{% endblock %}
+
+{% block content %}
+<div class="container">
+    <section class="mt-3">
+        <h1 class="page-title">Players</h1>
+        <p class="page-subtitle">Explore cricket player profiles and statistics</p>
+    </section>
+
+    <section class="mt-3">
+        <div class="search-container">
+            <input type="text" class="search-input" id="playerSearch" placeholder="Search players...">
+        </div>
+    </section>
+
+    <section class="mt-3">
+        <div class="tabs">
+            <div class="tab active" data-tab="all">All</div>
+            <div class="tab" data-tab="batsman">Batsman</div>
+            <div class="tab" data-tab="bowler">Bowler</div>
+            <div class="tab" data-tab="allrounder">All-Rounder</div>
+        </div>
+    </section>
+
+    <section class="mt-3 mb-4">
+        <div id="playersContainer">
+            <div class="loading-placeholder">
+                <p>Loading players...</p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-title {
+    font-size: clamp(32px, 6vw, 48px);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-yellow));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.page-subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-top: 8px;
+}
+
+.search-container {
+    padding: 0 16px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 16px 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    color: var(--text-primary);
+    font-family: var(--font-primary);
+    font-size: 16px;
+    transition: all var(--transition-fast);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.1);
+}
+
+#playersContainer {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+    #playersContainer {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    #playersContainer {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const samplePlayers = [
+    { id: 1, name: 'Virat Kohli', country: 'India', role: 'Batsman', matches: 254, runs: 12427, avg: 52.89 },
+    { id: 2, name: 'Rohit Sharma', country: 'India', role: 'Batsman', matches: 241, runs: 9782, avg: 49.15 },
+    { id: 3, name: 'Jasprit Bumrah', country: 'India', role: 'Bowler', matches: 89, wickets: 156, avg: 22.47 },
+    { id: 4, name: 'Steve Smith', country: 'Australia', role: 'Batsman', matches: 218, runs: 9431, avg: 61.24 },
+    { id: 5, name: 'Pat Cummins', country: 'Australia', role: 'Bowler', matches: 124, wickets: 245, avg: 24.32 },
+    { id: 6, name: 'Kane Williamson', country: 'New Zealand', role: 'Batsman', matches: 189, runs: 8127, avg: 54.18 },
+    { id: 7, name: 'Babar Azam', country: 'Pakistan', role: 'Batsman', matches: 132, runs: 5854, avg: 47.20 },
+    { id: 8, name: 'Ben Stokes', country: 'England', role: 'All-Rounder', matches: 156, runs: 5894, avg: 37.34 }
+];
+
+function loadPlayers() {
+    const container = document.getElementById('playersContainer');
+    container.innerHTML = '';
+    
+    samplePlayers.forEach(player => {
+        container.innerHTML += createPlayerCard(player);
+    });
+}
+
+function createPlayerCard(player) {
+    return `
+        <a href="/player/${player.id}" class="player-card" style="text-decoration: none; display: block;">
+            <div class="player-avatar">${player.name.substring(0, 2)}</div>
+            <div class="player-info">
+                <div class="player-name">${player.name}</div>
+                <div class="player-role">${player.country} • ${player.role}</div>
+                <div class="player-stats">
+                    <div class="player-stat">
+                        <span class="player-stat-value">${player.matches}</span>
+                        <span class="player-stat-label">Matches</span>
+                    </div>
+                    <div class="player-stat">
+                        <span class="player-stat-value">${player.runs || player.wickets}</span>
+                        <span class="player-stat-label">${player.role === 'Bowler' ? 'Wickets' : 'Runs'}</span>
+                    </div>
+                    <div class="player-stat">
+                        <span class="player-stat-value">${player.avg}</span>
+                        <span class="player-stat-label">Avg</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+    `;
+}
+
+// Search functionality
+document.getElementById('playerSearch').addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase();
+    const filtered = samplePlayers.filter(p => 
+        p.name.toLowerCase().includes(query) || 
+        p.country.toLowerCase().includes(query)
+    );
+    
+    const container = document.getElementById('playersContainer');
+    container.innerHTML = '';
+    
+    if (filtered.length > 0) {
+        filtered.forEach(player => {
+            container.innerHTML += createPlayerCard(player);
+        });
+    } else {
+        container.innerHTML = '<div class="loading-placeholder"><p>No players found</p></div>';
+    }
+});
+
+// Tab switching
+document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        const role = tab.dataset.tab;
+        let filtered = samplePlayers;
+        
+        if (role !== 'all') {
+            const roleMap = {
+                'batsman': 'Batsman',
+                'bowler': 'Bowler',
+                'allrounder': 'All-Rounder'
+            };
+            filtered = samplePlayers.filter(p => p.role === roleMap[role]);
+        }
+        
+        const container = document.getElementById('playersContainer');
+        container.innerHTML = '';
+        filtered.forEach(player => {
+            container.innerHTML += createPlayerCard(player);
+        });
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadPlayers();
+});
+</script>
+{% endblock %}

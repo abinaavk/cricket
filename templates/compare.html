@@ -1,0 +1,335 @@
+{% extends "base.html" %}
+
+{% block title %}Compare Players{% endblock %}
+
+{% block content %}
+<div class="container">
+    <section class="mt-3">
+        <h1 class="page-title">Compare Players</h1>
+        <p class="page-subtitle">Side-by-side statistics comparison</p>
+    </section>
+
+    <section class="mt-3">
+        <div class="comparison-selectors">
+            <div class="player-selector">
+                <label class="selector-label">Player 1</label>
+                <input type="text" class="player-search" id="player1Search" placeholder="Search player...">
+                <div class="player-results" id="player1Results"></div>
+                <div class="selected-player" id="player1Display"></div>
+            </div>
+            
+            <div class="vs-divider">
+                <span class="vs-text">VS</span>
+            </div>
+            
+            <div class="player-selector">
+                <label class="selector-label">Player 2</label>
+                <input type="text" class="player-search" id="player2Search" placeholder="Search player...">
+                <div class="player-results" id="player2Results"></div>
+                <div class="selected-player" id="player2Display"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mt-3">
+        <div class="tabs">
+            <div class="tab active" data-tab="batting">Batting</div>
+            <div class="tab" data-tab="bowling">Bowling</div>
+            <div class="tab" data-tab="career">Career</div>
+        </div>
+    </section>
+
+    <section class="mt-3 mb-4">
+        <div class="comparison-grid" id="comparisonGrid">
+            <div class="empty-state">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
+                    <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="15" cy="17" r="4" stroke="currentColor" stroke-width="2"/>
+                    <line x1="12" y1="9" x2="12" y2="15" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <p>Select two players to compare their statistics</p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-title {
+    font-size: clamp(32px, 6vw, 48px);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-yellow));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.page-subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-top: 8px;
+}
+
+.comparison-selectors {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+.player-selector {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.selector-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.player-search {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-family: var(--font-primary);
+    font-size: 14px;
+    transition: all var(--transition-fast);
+}
+
+.player-search:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+}
+
+.vs-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 40px;
+}
+
+.vs-text {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--accent-yellow);
+    background: var(--bg-tertiary);
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 2px solid var(--accent-yellow);
+}
+
+.selected-player {
+    margin-top: 16px;
+}
+
+.comparison-grid {
+    display: grid;
+    gap: 16px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-secondary);
+}
+
+.empty-state svg {
+    color: var(--text-tertiary);
+    margin-bottom: 16px;
+}
+
+.stat-comparison {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.stat-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.stat-values {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 16px;
+    align-items: center;
+}
+
+.stat-value {
+    font-family: var(--font-mono);
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.stat-value.left {
+    text-align: right;
+    color: var(--accent-blue);
+}
+
+.stat-value.right {
+    text-align: left;
+    color: var(--accent-yellow);
+}
+
+.stat-divider {
+    width: 2px;
+    height: 32px;
+    background: var(--border-subtle);
+}
+
+@media (max-width: 767px) {
+    .comparison-selectors {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .vs-divider {
+        padding-top: 0;
+        transform: rotate(90deg);
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Sample player database
+const samplePlayers = [
+    { id: 1, name: 'Virat Kohli', country: 'India', role: 'Batsman' },
+    { id: 2, name: 'Steve Smith', country: 'Australia', role: 'Batsman' },
+    { id: 3, name: 'Kane Williamson', country: 'New Zealand', role: 'Batsman' },
+    { id: 4, name: 'Joe Root', country: 'England', role: 'Batsman' },
+    { id: 5, name: 'Babar Azam', country: 'Pakistan', role: 'Batsman' },
+    { id: 6, name: 'Jasprit Bumrah', country: 'India', role: 'Bowler' },
+    { id: 7, name: 'Pat Cummins', country: 'Australia', role: 'Bowler' },
+    { id: 8, name: 'Kagiso Rabada', country: 'South Africa', role: 'Bowler' }
+];
+
+let selectedPlayer1 = null;
+let selectedPlayer2 = null;
+
+// Player search functionality
+document.getElementById('player1Search').addEventListener('input', (e) => {
+    searchPlayers(e.target.value, 'player1Results', 1);
+});
+
+document.getElementById('player2Search').addEventListener('input', (e) => {
+    searchPlayers(e.target.value, 'player2Results', 2);
+});
+
+function searchPlayers(query, resultsId, playerNum) {
+    const resultsDiv = document.getElementById(resultsId);
+    
+    if (query.length < 2) {
+        resultsDiv.innerHTML = '';
+        return;
+    }
+    
+    const matches = samplePlayers.filter(p => 
+        p.name.toLowerCase().includes(query.toLowerCase())
+    );
+    
+    resultsDiv.innerHTML = matches.map(player => `
+        <div class="search-result" onclick="selectPlayer(${player.id}, ${playerNum})">
+            ${player.name} <span style="color: var(--text-secondary);">(${player.country})</span>
+        </div>
+    `).join('');
+}
+
+function selectPlayer(playerId, playerNum) {
+    const player = samplePlayers.find(p => p.id === playerId);
+    
+    if (playerNum === 1) {
+        selectedPlayer1 = player;
+        document.getElementById('player1Display').innerHTML = createPlayerCard(player);
+        document.getElementById('player1Results').innerHTML = '';
+        document.getElementById('player1Search').value = player.name;
+    } else {
+        selectedPlayer2 = player;
+        document.getElementById('player2Display').innerHTML = createPlayerCard(player);
+        document.getElementById('player2Results').innerHTML = '';
+        document.getElementById('player2Search').value = player.name;
+    }
+    
+    if (selectedPlayer1 && selectedPlayer2) {
+        showComparison();
+    }
+}
+
+function createPlayerCard(player) {
+    return `
+        <div class="player-card" style="margin: 0;">
+            <div class="player-avatar">${player.name.substring(0, 2)}</div>
+            <div class="player-info">
+                <div class="player-name">${player.name}</div>
+                <div class="player-role">${player.country} • ${player.role}</div>
+            </div>
+        </div>
+    `;
+}
+
+function showComparison() {
+    const grid = document.getElementById('comparisonGrid');
+    
+    // Sample comparison data
+    const stats = [
+        { name: 'Matches', p1: 254, p2: 218 },
+        { name: 'Runs', p1: 12427, p2: 9431 },
+        { name: 'Average', p1: 52.89, p2: 61.24 },
+        { name: 'Strike Rate', p1: 93.24, p2: 88.71 },
+        { name: 'Centuries', p1: 46, p2: 32 },
+        { name: 'Half Centuries', p1: 67, p2: 41 }
+    ];
+    
+    grid.innerHTML = stats.map(stat => `
+        <div class="stat-comparison">
+            <div class="stat-name">${stat.name}</div>
+            <div class="stat-values">
+                <div class="stat-value left">${stat.p1}</div>
+                <div class="stat-divider"></div>
+                <div class="stat-value right">${stat.p2}</div>
+            </div>
+        </div>
+    `).join('');
+}
+</script>
+
+<style>
+.search-result {
+    padding: 12px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    margin-top: 8px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.search-result:hover {
+    background: var(--border-bright);
+    border-color: var(--accent-blue);
+}
+</style>
+{% endblock %}

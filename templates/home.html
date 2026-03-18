@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <section class="hero mt-3">
+        <div class="hero-content">
+            <h1 class="hero-title">Live Cricket<br><span class="accent">Scores & Stats</span></h1>
+            <p class="hero-subtitle">Real-time updates, detailed statistics, and player comparisons</p>
+        </div>
+    </section>
+
+    <!-- Live Matches -->
+    <section class="mt-4">
+        <div class="section-header">
+            <h2 class="section-title">Live Matches</h2>
+            <a href="{{ url_for('live') }}" class="section-link">View All →</a>
+        </div>
+        
+        <div class="matches-list" id="liveMatches">
+            <!-- Matches will be loaded dynamically -->
+            <div class="loading-placeholder">
+                <p>Loading live matches...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Stats -->
+    <section class="mt-4">
+        <div class="section-header">
+            <h2 class="section-title">Quick Stats</h2>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-value">127</div>
+                <div class="stat-label">Live Matches</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">2.4K+</div>
+                <div class="stat-label">Players</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">15</div>
+                <div class="stat-label">Tournaments</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">89K+</div>
+                <div class="stat-label">Matches</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upcoming Matches -->
+    <section class="mt-4">
+        <div class="section-header">
+            <h2 class="section-title">Upcoming Matches</h2>
+            <a href="{{ url_for('matches') }}" class="section-link">View All →</a>
+        </div>
+        
+        <div class="matches-list" id="upcomingMatches">
+            <!-- Matches will be loaded dynamically -->
+        </div>
+    </section>
+
+    <!-- Featured Players -->
+    <section class="mt-4 mb-4">
+        <div class="section-header">
+            <h2 class="section-title">Featured Players</h2>
+            <a href="{{ url_for('players') }}" class="section-link">View All →</a>
+        </div>
+        
+        <div class="players-list" id="featuredPlayers">
+            <!-- Players will be loaded dynamically -->
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.hero {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.hero-title {
+    font-size: clamp(36px, 8vw, 56px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--text-primary), var(--accent-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-title .accent {
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-yellow));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.matches-list,
+.players-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.loading-placeholder {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-secondary);
+}
+
+@media (min-width: 768px) {
+    .hero {
+        padding: 60px 0;
+    }
+    
+    .matches-list,
+    .players-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .matches-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .players-list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Load live matches
+async function loadLiveMatches() {
+    try {
+        const response = await fetch('/api/live-matches');
+        const data = await response.json();
+        
+        const container = document.getElementById('liveMatches');
+        container.innerHTML = '';
+        
+        if (data.data && data.data.length > 0) {
+            data.data.slice(0, 4).forEach(match => {
+                container.innerHTML += createMatchCard(match, 'live');
+            });
+        } else {
+            container.innerHTML = '<div class="loading-placeholder"><p>No live matches at the moment</p></div>';
+        }
+    } catch (error) {
+        console.error('Error loading live matches:', error);
+    }
+}
+
+function createMatchCard(match, status) {
+    return `
+        <a href="/scorecard/${match.id}" class="match-card" style="text-decoration: none;">
+            <div class="match-header">
+                <div class="match-type">${match.matchType || 'T20'}</div>
+                <div class="match-status ${status}">${status.toUpperCase()}</div>
+            </div>
+            <div class="match-body">
+                <div class="teams">
+                    <div class="team">
+                        <div class="team-info">
+                            <div class="team-flag">${match.teamInfo?.[0]?.shortname?.substring(0, 2) || 'T1'}</div>
+                            <div>
+                                <div class="team-name">${match.teamInfo?.[0]?.shortname || 'Team 1'}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="team-score">${match.score?.[0]?.r || '0'}/${match.score?.[0]?.w || '0'}</div>
+                            <div class="team-overs">(${match.score?.[0]?.o || '0'} ov)</div>
+                        </div>
+                    </div>
+                    <div class="team">
+                        <div class="team-info">
+                            <div class="team-flag">${match.teamInfo?.[1]?.shortname?.substring(0, 2) || 'T2'}</div>
+                            <div>
+                                <div class="team-name">${match.teamInfo?.[1]?.shortname || 'Team 2'}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="team-score">${match.score?.[1]?.r || '0'}/${match.score?.[1]?.w || '0'}</div>
+                            <div class="team-overs">(${match.score?.[1]?.o || '0'} ov)</div>
+                        </div>
+                    </div>
+                </div>
+                ${match.status ? `<div class="mt-2 text-center text-muted" style="font-size: 13px;">${match.status}</div>` : ''}
+            </div>
+        </a>
+    `;
+}
+
+// Load on page load
+document.addEventListener('DOMContentLoaded', () => {
+    loadLiveMatches();
+    // Refresh every 30 seconds
+    setInterval(loadLiveMatches, 30000);
+});
+</script>
+{% endblock %}
