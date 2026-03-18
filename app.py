@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 # Cricket API configuration
-CRICAPI_KEY = "YOUR_API_KEY_HERE"  # Replace with actual API key
+CRICAPI_KEY = "8a83b2c9-1592-4b41-b0aa-3b132bdbe321"  # Replace with actual API key
 CRICAPI_BASE = "https://api.cricapi.com/v1"
 
 @app.route('/')
