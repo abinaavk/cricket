@@ -1,0 +1,231 @@
+/* Cricket Stats - CSS Variables & Design System */
+/* Complete design tokens for consistent styling */
+
+:root {
+  /* ========================================
+     COLOR PALETTE
+     ======================================== */
+  
+  /* Background Colors */
+  --color-bg-primary: #0a0a0a;
+  --color-bg-secondary: #151515;
+  --color-bg-tertiary: #1f1f1f;
+  --color-bg-card: #1a1a1a;
+  --color-bg-card-hover: #222222;
+  
+  /* Interactive Colors */
+  --color-accent-blue: #00d4ff;
+  --color-accent-blue-hover: #00b8e6;
+  --color-accent-blue-light: rgba(0, 212, 255, 0.15);
+  --color-accent-yellow: #d4ff00;
+  --color-accent-yellow-hover: #bde600;
+  --color-accent-yellow-light: rgba(212, 255, 0, 0.15);
+  
+  /* Text Colors */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a0a0a0;
+  --color-text-tertiary: #707070;
+  --color-text-inverse: #0a0a0a;
+  
+  /* Status Colors */
+  --color-success: #00ff88;
+  --color-success-light: rgba(0, 255, 136, 0.15);
+  --color-danger: #ff4466;
+  --color-danger-light: rgba(255, 68, 102, 0.15);
+  --color-warning: #ffaa00;
+  --color-warning-light: rgba(255, 170, 0, 0.15);
+  --color-info: #00d4ff;
+  --color-info-light: rgba(0, 212, 255, 0.15);
+  
+  /* Border Colors */
+  --color-border-subtle: #2a2a2a;
+  --color-border-bright: #404040;
+  --color-border-focus: #00d4ff;
+  
+  /* ========================================
+     TYPOGRAPHY
+     ======================================== */
+  
+  /* Font Families */
+  --font-primary: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Monaco', 'Consolas', 'Courier New', monospace;
+  
+  /* Font Sizes (Fluid Typography) */
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);      /* 12px - 14px */
+  --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);        /* 14px - 16px */
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);      /* 16px - 18px */
+  --text-lg: clamp(1.125rem, 1rem + 0.625vw, 1.5rem);        /* 18px - 24px */
+  --text-xl: clamp(1.5rem, 1.25rem + 1.25vw, 2rem);          /* 24px - 32px */
+  --text-2xl: clamp(2rem, 1.5rem + 2.5vw, 3rem);             /* 32px - 48px */
+  --text-3xl: clamp(2.5rem, 2rem + 2.5vw, 4rem);             /* 40px - 64px */
+  
+  /* Font Weights */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-extrabold: 800;
+  --weight-black: 900;
+  
+  /* Line Heights */
+  --leading-none: 1;
+  --leading-tight: 1.2;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+  --leading-loose: 2;
+  
+  /* Letter Spacing */
+  --tracking-tighter: -0.05em;
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+  
+  /* ========================================
+     SPACING SCALE
+     ======================================== */
+  
+  --space-0: 0;
+  --space-1: 0.25rem;    /* 4px */
+  --space-2: 0.5rem;     /* 8px */
+  --space-3: 0.75rem;    /* 12px */
+  --space-4: 1rem;       /* 16px */
+  --space-5: 1.25rem;    /* 20px */
+  --space-6: 1.5rem;     /* 24px */
+  --space-8: 2rem;       /* 32px */
+  --space-10: 2.5rem;    /* 40px */
+  --space-12: 3rem;      /* 48px */
+  --space-16: 4rem;      /* 64px */
+  --space-20: 5rem;      /* 80px */
+  --space-24: 6rem;      /* 96px */
+  
+  /* ========================================
+     BORDER RADIUS
+     ======================================== */
+  
+  --radius-none: 0;
+  --radius-sm: 0.5rem;     /* 8px */
+  --radius-base: 0.75rem;  /* 12px */
+  --radius-lg: 1rem;       /* 16px */
+  --radius-xl: 1.25rem;    /* 20px */
+  --radius-2xl: 1.5rem;    /* 24px */
+  --radius-3xl: 2rem;      /* 32px */
+  --radius-full: 9999px;
+  
+  /* ========================================
+     SHADOWS
+     ======================================== */
+  
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-base: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+  --shadow-2xl: 0 24px 64px rgba(0, 0, 0, 0.7);
+  
+  /* Glow Shadows */
+  --shadow-glow-blue: 0 0 24px rgba(0, 212, 255, 0.3);
+  --shadow-glow-blue-lg: 0 0 40px rgba(0, 212, 255, 0.4);
+  --shadow-glow-yellow: 0 0 24px rgba(212, 255, 0, 0.3);
+  --shadow-glow-yellow-lg: 0 0 40px rgba(212, 255, 0, 0.4);
+  
+  /* Focus Shadow */
+  --shadow-focus: 0 0 0 3px var(--color-accent-blue-light);
+  
+  /* ========================================
+     TRANSITIONS
+     ======================================== */
+  
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  /* Easing Functions */
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* ========================================
+     Z-INDEX SCALE
+     ======================================== */
+  
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+  
+  /* ========================================
+     BREAKPOINTS (for reference in JS)
+     ======================================== */
+  
+  --breakpoint-sm: 640px;   /* Large phones */
+  --breakpoint-md: 768px;   /* Tablets */
+  --breakpoint-lg: 1024px;  /* Small laptops */
+  --breakpoint-xl: 1280px;  /* Desktops */
+  --breakpoint-2xl: 1536px; /* Large screens */
+  
+  /* ========================================
+     LAYOUT
+     ======================================== */
+  
+  --container-max-width: 1280px;
+  --container-padding: var(--space-4);
+  
+  --header-height: 64px;
+  --bottom-nav-height: 64px;
+  
+  /* Safe Area Insets for Notched Devices */
+  --safe-area-top: env(safe-area-inset-top, 0);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0);
+  --safe-area-left: env(safe-area-inset-left, 0);
+  --safe-area-right: env(safe-area-inset-right, 0);
+  
+  /* ========================================
+     COMPONENT SPECIFIC
+     ======================================== */
+  
+  /* Touch Targets */
+  --touch-target-min: 44px;
+  --touch-target-preferred: 48px;
+  
+  /* Card */
+  --card-padding: var(--space-5);
+  --card-gap: var(--space-4);
+  
+  /* Input */
+  --input-height: 48px;
+  --input-padding-x: var(--space-4);
+  --input-padding-y: var(--space-3);
+  
+  /* Button */
+  --button-height: 44px;
+  --button-padding-x: var(--space-5);
+  --button-padding-y: var(--space-3);
+  
+  /* Badge */
+  --badge-padding-x: var(--space-3);
+  --badge-padding-y: var(--space-1);
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+
+@media (min-width: 768px) {
+  :root {
+    --container-padding: var(--space-6);
+    --header-height: 72px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --container-padding: var(--space-8);
+  }
+}
